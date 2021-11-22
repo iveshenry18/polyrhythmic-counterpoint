@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import { Midi } from '@tonejs/midi';
 import { makePolyrhythmicCounterpoint } from '../functions/transform_midi';
 
@@ -7,7 +7,10 @@ export default function Home() {
   const [outputMidi, setOutputMidi] = useState(null);
 
   const handleMidiDrop = async (event) => {
-    if (!event.target.files) return;
+    if (!event.target.files.length) {
+      setInputMidi(null);
+      return;
+    }
     console.log(event);
     const originalMidi = await Midi.fromUrl(URL.createObjectURL(event.target.files[0]));
     setInputMidi(originalMidi);
@@ -19,8 +22,8 @@ export default function Home() {
   }
 
   return (
-    <div className="flex flex-col items-center">
-      <h1 className="text-center font-serif text-2xl">Polyrhythmic Counterpoint</h1>
+    <div className="flex flex-col items-center justify-center h-screen w-screen gap-3">
+      <h1 className="text-center font-serif text-4xl">Polyrhythmic Counterpoint</h1>
       <div className="border-2 border-dotted">
         <input
           type="file"
@@ -30,14 +33,14 @@ export default function Home() {
       </div>
       <div className="min-h-10 min-w-20 p-2">
       {!inputMidi
-        ? <div className="cursor-not-allowed bg-gray-600 text-white">Upload Midi Above</div>
+        ? <div className="cursor-not-allowed bg-gray-600 text-white p-2">Upload Midi Above</div>
         : !outputMidi
-        ? <div className="cursor-wait">processing...</div>
+        ? <div className="cursor-wait p-2">processing...</div>
         : <a
-          className="bg-blue-700 text-white"
+          className="bg-blue-700 text-white p-2"
           href={URL.createObjectURL(new Blob([outputMidi.toArray()], {type: "audio/midi"}))}
           download="polyrhythmic_counterpoint.mid"
-          >download</a>}
+          >Download</a>}
       </div>
     </div>
   )
