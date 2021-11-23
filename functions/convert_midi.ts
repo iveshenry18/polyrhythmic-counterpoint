@@ -1,8 +1,14 @@
 import { Midi, Track } from '@tonejs/midi'
 
-export async function makePolyrhythmicCounterpoint(originalMidi) {
+import { ConversionSettings } from '../pages/conversion_settings_panel';
+
+export async function makePolyrhythmicCounterpoint(
+  originalMidi: Midi,
+  conversionSettings: ConversionSettings
+  ): Promise<Midi> {
   let newMidi = new Midi();
-  
+
+
   // MOCK
   const exampleTrack = newMidi.addTrack();
   exampleTrack.addNote({
