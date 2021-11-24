@@ -19,13 +19,15 @@ export function ObjectViewer({ title, content }: { title: string, content: Objec
 
 export function ObjectPanel({
   inputMidi,
-  outputMidi
+  outputMidi,
+  open=false
 }: {
   inputMidi: Midi,
-  outputMidi: Midi
+  outputMidi: Midi,
+  open: boolean,
 }) {
   return (
-    <SidePanel>
+    <SidePanel open={open}>
       <ObjectViewer
         title="Input"
         content={inputMidi}

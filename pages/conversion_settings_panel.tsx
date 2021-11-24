@@ -13,13 +13,15 @@ export interface ConversionSettings {
 export default function ConversionSettingPanel(
   {
     conversionSettings,
-    setConversionSettings
+    setConversionSettings,
+    open=false
   }: {
+    open: boolean,
     conversionSettings: ConversionSettings,
     setConversionSettings: Function
   }) {
   return (
-    <SidePanel>
+    <SidePanel open={open}>
       <h2 className="text-xl font-serif mb-2">Settings</h2>
       <ConversionSetting title="Pitch Center">
         <select>

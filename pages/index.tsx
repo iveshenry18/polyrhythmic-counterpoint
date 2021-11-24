@@ -1,17 +1,20 @@
 import { useState } from 'react';
-import { AdjustmentsIcon, CodeIcon } from '@heroicons/react/outline';
+import { AdjustmentsIcon, CodeIcon, QuestionMarkCircleIcon } from '@heroicons/react/outline';
 
 import { Midi } from '@tonejs/midi';
 import { makePolyrhythmicCounterpoint } from '../functions/convert_midi';
 
 import { ObjectPanel } from './object_viewer_panel';
+import HelpPanel from './help_panel';
 import ConversionSettingPanel, { ConversionSettings } from './conversion_settings_panel';
+import { IconButton, PanelIconButton } from './side_panel';
 
 export default function Home() {
   const [inputMidi, setInputMidi]: [Midi, Function] = useState(null); // Might not be so necessary
   const [outputMidi, setOutputMidi]: [Midi, Function] = useState(null);
   const [settingsOpen, setSettingsOpen]: [boolean, Function] = useState(false);
   const [codeOpen, setCodeOpen]: [boolean, Function] = useState(false);
+  const [helpOpen, setHelpOpen]: [boolean, Function] = useState(false);
   const [conversionSettings, setConversionSettings]: [ConversionSettings, Function] = useState({
     pitchCenter: null,
     lowestPitch: null,
@@ -35,20 +38,8 @@ export default function Home() {
   }
 
   return (
-    <div className="flex flex-row items-stretch h-screen w-screen">
-      {inputMidi && outputMidi &&
-        <button
-          className="fixed left-4 bottom-4 z-10"
-          onClick={() => (setCodeOpen((prevCodeOpen) => (!prevCodeOpen)))}>
-          <CodeIcon className={`h-8 w-8 ${codeOpen ? "black" : "text-gray-400 hover:text-gray-500"}`} />
-        </button>
-      }
-      {codeOpen &&
-        <ObjectPanel
-          inputMidi={inputMidi}
-          outputMidi={outputMidi} />
-      }
-      <div className="flex flex-col items-center justify-center h-screen max-h-screen w-screen max-w-screen gap-3">
+    <div className="flex flex-row items-stretch h-screen w-screen relative">
+      <div className="flex flex-col items-center justify-center h-screen max-h-screen w-screen max-w-screen gap-3 relative">
         <h1 className="text-center font-serif text-4xl">Polyrhythmic Counterpoint</h1>
         <div className="border-2 border-dotted">
           <input
@@ -68,18 +59,39 @@ export default function Home() {
                 download="polyrhythmic_counterpoint.mid"
               >Download</a>}
         </div>
-        <button
-          className="fixed right-4 bottom-4 z-10"
-          onClick={() => (setSettingsOpen((prevSettingsOpen) => (!prevSettingsOpen)))}>
-          <AdjustmentsIcon className={`h-8 w-8 ${settingsOpen ? "black" : "text-gray-400 hover:text-gray-500"}`} />
-        </button>
       </div>
-      {settingsOpen &&
-        <ConversionSettingPanel
-          conversionSettings={conversionSettings}
-          setConversionSettings={setConversionSettings}
+      <ConversionSettingPanel
+        open={settingsOpen}
+        conversionSettings={conversionSettings}
+        setConversionSettings={setConversionSettings}
+      />
+      <ObjectPanel
+        open={codeOpen}
+        inputMidi={inputMidi}
+        outputMidi={outputMidi}
+      />
+      <HelpPanel
+        open={helpOpen}
+      />
+      <div className="flex flex-col justify-start gap-4 p-4">
+        <PanelIconButton
+          panelOpen={helpOpen}
+          setPanelOpen={setHelpOpen}
+          Icon={QuestionMarkCircleIcon}
         />
-      }
+        <PanelIconButton
+          panelOpen={settingsOpen}
+          setPanelOpen={setSettingsOpen}
+          Icon={AdjustmentsIcon}
+        />
+        {inputMidi && outputMidi &&
+          <PanelIconButton
+            panelOpen={codeOpen}
+            setPanelOpen={setCodeOpen}
+            Icon={CodeIcon}
+          />
+        }
+      </div>
     </div>
   )
 }
