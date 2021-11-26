@@ -7,10 +7,10 @@ import { makePolyrhythmicCounterpoint } from '../functions/convert_midi';
 import { ObjectPanel } from './object_viewer_panel';
 import HelpPanel from './help_panel';
 import ConversionSettingPanel, { ConversionSettings } from './conversion_settings_panel';
-import { IconButton, PanelIconButton } from './side_panel';
+import { PanelIconButton } from './side_panel';
 
 
-enum OpenMenu {
+enum Menu {
   NONE = 0,
   HELP,
   SETTINGS,
@@ -20,7 +20,7 @@ enum OpenMenu {
 export default function Home() {
   const [inputMidi, setInputMidi] = useState<Midi>(null); // Might not be so necessary
   const [outputMidi, setOutputMidi] = useState<Midi>(null);
-  const [openMenu, setOpenMenu] = useState<OpenMenu>(OpenMenu.NONE);
+  const [openMenu, setOpenMenu] = useState<Menu>(Menu.NONE);
   const [conversionSettings, setConversionSettings] = useState<ConversionSettings>({
     pitchCenter: null,
     lowestPitch: null,
@@ -42,6 +42,10 @@ export default function Home() {
     console.log(newMidi);
     return;
   }
+
+  const toggleMenu = (menu: Menu) => (
+    () => {setOpenMenu((prevOpenMenu) => (prevOpenMenu === menu ? Menu.NONE : menu))}
+  )
 
   return (
     <div className="flex flex-row items-stretch h-screen w-screen relative">
@@ -67,33 +71,33 @@ export default function Home() {
         </div>
       </div>
       <ConversionSettingPanel
-        open={openMenu === OpenMenu.SETTINGS}
+        open={openMenu === Menu.SETTINGS}
         conversionSettings={conversionSettings}
         setConversionSettings={setConversionSettings}
       />
       <ObjectPanel
-        open={openMenu === OpenMenu.CODE}
+        open={openMenu === Menu.CODE}
         inputMidi={inputMidi}
         outputMidi={outputMidi}
       />
       <HelpPanel
-        open={openMenu === OpenMenu.HELP}
+        open={openMenu === Menu.HELP}
       />
       <div className="flex flex-col justify-start gap-4 p-4">
         <PanelIconButton
-          panelOpen={openMenu === OpenMenu.HELP}
-          setPanelOpen={() => { setOpenMenu((prevOpenMenu) => (prevOpenMenu === OpenMenu.HELP ? OpenMenu.NONE : OpenMenu.HELP)) }}
+          panelOpen={openMenu === Menu.HELP}
+          setPanelOpen={toggleMenu(Menu.HELP)} 
           Icon={QuestionMarkCircleIcon}
         />
         <PanelIconButton
-          panelOpen={openMenu === OpenMenu.SETTINGS}
-          setPanelOpen={() => { setOpenMenu((prevOpenMenu) => (prevOpenMenu === OpenMenu.SETTINGS ? OpenMenu.NONE : OpenMenu.SETTINGS)) }}
+          panelOpen={openMenu === Menu.SETTINGS}
+          setPanelOpen={toggleMenu(Menu.SETTINGS)}
           Icon={AdjustmentsIcon}
         />
         {inputMidi && outputMidi &&
           <PanelIconButton
-            panelOpen={openMenu === OpenMenu.CODE}
-            setPanelOpen={() => { setOpenMenu((prevOpenMenu) => (prevOpenMenu === OpenMenu.CODE ? OpenMenu.NONE : OpenMenu.CODE)) }}
+            panelOpen={openMenu === Menu.CODE}
+            setPanelOpen={toggleMenu(Menu.CODE)}
             Icon={CodeIcon}
           />
         }

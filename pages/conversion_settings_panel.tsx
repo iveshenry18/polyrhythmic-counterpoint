@@ -27,7 +27,7 @@ export default function ConversionSettingPanel(
         <select>
           <option value="default">Key from MIDI</option>
           {pitchClassNames.map((pitchClassName) => (
-            <option value={pitchClassName} id={pitchClassName}>{pitchClassName}</option>
+            <option value={pitchClassName} id={pitchClassName} key={pitchClassName}>{pitchClassName}</option>
           ))}
         </select>
       </ConversionSetting>
