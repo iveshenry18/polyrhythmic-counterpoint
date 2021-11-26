@@ -9,13 +9,19 @@ import HelpPanel from './help_panel';
 import ConversionSettingPanel, { ConversionSettings } from './conversion_settings_panel';
 import { IconButton, PanelIconButton } from './side_panel';
 
+
+enum OpenMenu {
+  NONE = 0,
+  HELP,
+  SETTINGS,
+  CODE
+}
+
 export default function Home() {
-  const [inputMidi, setInputMidi]: [Midi, Function] = useState(null); // Might not be so necessary
-  const [outputMidi, setOutputMidi]: [Midi, Function] = useState(null);
-  const [settingsOpen, setSettingsOpen]: [boolean, Function] = useState(false);
-  const [codeOpen, setCodeOpen]: [boolean, Function] = useState(false);
-  const [helpOpen, setHelpOpen]: [boolean, Function] = useState(false);
-  const [conversionSettings, setConversionSettings]: [ConversionSettings, Function] = useState({
+  const [inputMidi, setInputMidi] = useState<Midi>(null); // Might not be so necessary
+  const [outputMidi, setOutputMidi] = useState<Midi>(null);
+  const [openMenu, setOpenMenu] = useState<OpenMenu>(OpenMenu.NONE);
+  const [conversionSettings, setConversionSettings] = useState<ConversionSettings>({
     pitchCenter: null,
     lowestPitch: null,
     rhythmMultiplier: 4,
@@ -61,33 +67,33 @@ export default function Home() {
         </div>
       </div>
       <ConversionSettingPanel
-        open={settingsOpen}
+        open={openMenu === OpenMenu.SETTINGS}
         conversionSettings={conversionSettings}
         setConversionSettings={setConversionSettings}
       />
       <ObjectPanel
-        open={codeOpen}
+        open={openMenu === OpenMenu.CODE}
         inputMidi={inputMidi}
         outputMidi={outputMidi}
       />
       <HelpPanel
-        open={helpOpen}
+        open={openMenu === OpenMenu.HELP}
       />
       <div className="flex flex-col justify-start gap-4 p-4">
         <PanelIconButton
-          panelOpen={helpOpen}
-          setPanelOpen={setHelpOpen}
+          panelOpen={openMenu === OpenMenu.HELP}
+          setPanelOpen={() => { setOpenMenu((prevOpenMenu) => (prevOpenMenu === OpenMenu.HELP ? OpenMenu.NONE : OpenMenu.HELP)) }}
           Icon={QuestionMarkCircleIcon}
         />
         <PanelIconButton
-          panelOpen={settingsOpen}
-          setPanelOpen={setSettingsOpen}
+          panelOpen={openMenu === OpenMenu.SETTINGS}
+          setPanelOpen={() => { setOpenMenu((prevOpenMenu) => (prevOpenMenu === OpenMenu.SETTINGS ? OpenMenu.NONE : OpenMenu.SETTINGS)) }}
           Icon={AdjustmentsIcon}
         />
         {inputMidi && outputMidi &&
           <PanelIconButton
-            panelOpen={codeOpen}
-            setPanelOpen={setCodeOpen}
+            panelOpen={openMenu === OpenMenu.CODE}
+            setPanelOpen={() => { setOpenMenu((prevOpenMenu) => (prevOpenMenu === OpenMenu.CODE ? OpenMenu.NONE : OpenMenu.CODE)) }}
             Icon={CodeIcon}
           />
         }
