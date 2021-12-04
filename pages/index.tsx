@@ -23,9 +23,9 @@ export default function Home() {
   const [openMenu, setOpenMenu] = useState<Menu>(Menu.NONE);
   const [conversionSettings, setConversionSettings] = useState<ConversionSettings>({
     pitchCenter: null,
-    lowestPitch: null,
+    quarterNotePitch: -1,
     rhythmMultiplier: 4,
-    tempo: null,
+    tempo: -1,
   });
 
   const handleMidiDrop = async (event) => {

@@ -4,10 +4,10 @@ import { pitchClassNames } from "../functions/music_utilities";
 import SidePanel from "./side_panel";
 
 export interface ConversionSettings {
-  pitchCenter: string,
+  pitchCenter: string, // if "default", use key
   rhythmMultiplier: number,
-  tempo: number,
-  lowestPitch: number,
+  tempo: number, // if -1, read from file
+  quarterNotePitch: number, // if -1, use lowest tonic
 }
 
 export default function ConversionSettingPanel(
