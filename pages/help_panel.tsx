@@ -21,6 +21,10 @@ export default function HelpPanel({ open = false }) {
                     <li><a href="https://steinberg.help/dorico/v2/en/dorico/topics/project_file_handling/project_file_handling_midi_exporting_t.html" target="_blank">Dorico</a></li>
                 </ul>
             </div>
+            <div>
+                <h3 className="text-xl">ok but what if I want to know some boring details about the specifics of this implementation?</h3>
+                <p>Ok fine, I have this little nugget for ya: the imported midi is processed to polyrhythmic ratios based on just intonation from the "quarter note pitch" (the lowest tonic by default)</p>
+            </div>
         </SidePanel>
     )
 }

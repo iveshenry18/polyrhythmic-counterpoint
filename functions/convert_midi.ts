@@ -1,9 +1,9 @@
 import { Midi, Track } from '@tonejs/midi'
-import { ControlChange } from '@tonejs/midi/dist/ControlChange';
 import { KeySignatureEvent, MetaEvent, TempoEvent, TimeSignatureEvent } from '@tonejs/midi/dist/Header';
 import { Note } from '@tonejs/midi/dist/Note';
 
 import { ConversionSettings } from '../pages/conversion_settings_panel';
+import { intervalToHarmonicRatio } from './music_utilities';
 
 const copyMidiHeader = (
   originalMidi: Midi,
@@ -79,21 +79,26 @@ const copyTrackSettings = (
 
 const calculateNoteDuration = (
   originalNote: Note,
-  conversionSettings: ConversionSettings
+  quarterNotePitch: number,
+  ppq: number
 ) => {
-  return 10; // haha
+  const midiInterval = originalNote.midi - quarterNotePitch;
+  const harmonicRatio = intervalToHarmonicRatio(midiInterval);
+  // TODO: find better way to pass ppq value down to here
+  return Math.round(harmonicRatio.mul(ppq).valueOf());
 }
 
-const makeNotesFromMetaNote = (
+const makeNotes = (
   newTrack: Track,
   originalNote: Note,
-  metaNote: Note,
-  conversionSettings: ConversionSettings
+  conversionSettings: ConversionSettings,
+  ppq: number
 ) => {
   let currentTick = originalNote.ticks * conversionSettings.rhythmMultiplier;
   const finalTick = originalNote.ticks * conversionSettings.rhythmMultiplier
                   + originalNote.durationTicks * conversionSettings.rhythmMultiplier;
   while (currentTick < finalTick) {
+    const durationTicks = calculateNoteDuration(originalNote, conversionSettings.quarterNotePitch, ppq);
     newTrack.addNote({
       midi: originalNote.midi,
       name: originalNote.name,
@@ -103,9 +108,10 @@ const makeNotesFromMetaNote = (
       time: originalNote.time * conversionSettings.rhythmMultiplier,
       velocity: originalNote.velocity,
       noteOffVelocity: originalNote.noteOffVelocity,
-      durationTicks: calculateNoteDuration(originalNote, conversionSettings),
+      durationTicks: durationTicks,
       // duration: ???
     })
+    currentTick += durationTicks;
   }
 }
 
@@ -135,19 +141,10 @@ export async function makePolyrhythmicCounterpoint(
         bars: originalNote.bars, // ???
         toJSON: originalNote.toJSON
       }
-      makeNotesFromMetaNote(newTrack, originalNote, metaNote, conversionSettings);
+      makeNotes(newTrack, originalNote, conversionSettings, newMidi.header.ppq);
     })
 
   })
-  
-  // // MOCK
-  // const exampleTrack = newMidi.addTrack();
-  // exampleTrack.addNote({
-  //   midi: 60,
-  //   time: 0,
-  //   duration: 0.2
-  // });
-  // await new Promise(resolve => setTimeout(resolve, 1000));
-  
+
   return newMidi;
 }
