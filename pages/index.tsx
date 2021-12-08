@@ -38,8 +38,6 @@ export default function Home() {
     setInputMidi(originalMidi);
     const newMidi = await makePolyrhythmicCounterpoint(originalMidi, conversionSettings);
     setOutputMidi(newMidi);
-    console.log(originalMidi);
-    console.log(newMidi);
     return;
   }
 

@@ -23,14 +23,14 @@ export default function ConversionSettingPanel(
   return (
     <SidePanel open={open}>
       <h2 className="text-xl font-serif mb-2">Settings</h2>
-      <ConversionSetting title="Pitch Center">
+      {/* <ConversionSetting title="Pitch Center">
         <select>
           <option value="default">Key from MIDI</option>
           {pitchClassNames.map((pitchClassName) => (
             <option value={pitchClassName} id={pitchClassName} key={pitchClassName}>{pitchClassName}</option>
           ))}
         </select>
-      </ConversionSetting>
+      </ConversionSetting> */}
       <ConversionSetting title="Rhythm Multiplier">
         <input type="number" min={1} max={64} defaultValue={4}></input>
       </ConversionSetting>
@@ -38,7 +38,7 @@ export default function ConversionSettingPanel(
         <p>Read from MIDI</p>
       </ConversionSetting>
       <ConversionSetting title="Quarter Note Pitch">
-        <p>Lowest tonic in file</p>
+        <p>Tonic in middle of piece range</p>
       </ConversionSetting>
     </SidePanel>
   )
