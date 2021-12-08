@@ -1,7 +1,7 @@
 import { Midi, Track } from '@tonejs/midi'
 import { Note } from '@tonejs/midi/dist/Note';
 
-import { ConversionSettings } from '../pages/conversion_settings_panel';
+import { ConversionSettings } from '../components/conversion_settings_panel';
 import { intervalToHarmonicRatio, pitchClassToMidi } from './music_utilities';
 
 const modifyMidiHeader = (

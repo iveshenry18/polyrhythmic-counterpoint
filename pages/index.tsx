@@ -4,10 +4,10 @@ import { AdjustmentsIcon, CodeIcon, QuestionMarkCircleIcon } from '@heroicons/re
 import { Midi } from '@tonejs/midi';
 import { makePolyrhythmicCounterpoint } from '../functions/convert_midi';
 
-import { ObjectPanel } from './object_viewer_panel';
-import HelpPanel from './help_panel';
-import ConversionSettingPanel, { ConversionSettings } from './conversion_settings_panel';
-import { PanelIconButton } from './side_panel';
+import ObjectPanel from '../components/object_viewer_panel';
+import HelpPanel from '../components/help_panel';
+import ConversionSettingPanel, { ConversionSettings } from '../components/conversion_settings_panel';
+import { PanelIconButton } from '../components/side_panel';
 
 
 enum Menu {

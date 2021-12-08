@@ -17,7 +17,7 @@ export function ObjectViewer({ title, content }: { title: string, content: Objec
   )
 }
 
-export function ObjectPanel({
+export default function ObjectPanel({
   inputMidi,
   outputMidi,
   open=false
