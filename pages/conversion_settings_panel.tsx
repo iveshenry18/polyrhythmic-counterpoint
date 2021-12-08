@@ -14,12 +14,20 @@ export default function ConversionSettingPanel(
   {
     conversionSettings,
     setConversionSettings,
-    open=false
+    open = false
   }: {
     open: boolean,
     conversionSettings: ConversionSettings,
     setConversionSettings: Function
   }) {
+
+  const updateRhythmMultiplier = (event) => {
+    setConversionSettings((prevConversionSettings) => ({
+      ...prevConversionSettings,
+      rhythmMultiplier: event.target.value
+    }))
+  }
+
   return (
     <SidePanel open={open}>
       <h2 className="text-xl font-serif mb-2">Settings</h2>
@@ -32,7 +40,7 @@ export default function ConversionSettingPanel(
         </select>
       </ConversionSetting> */}
       <ConversionSetting title="Rhythm Multiplier">
-        <input type="number" min={1} max={64} defaultValue={4}></input>
+        <input type="number" min={1} max={64} defaultValue={conversionSettings.rhythmMultiplier} onChange={updateRhythmMultiplier}></input>
       </ConversionSetting>
       <ConversionSetting title="Tempo">
         <p>Read from MIDI</p>

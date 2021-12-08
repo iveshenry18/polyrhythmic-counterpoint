@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { AdjustmentsIcon, CodeIcon, QuestionMarkCircleIcon } from '@heroicons/react/outline';
 
 import { Midi } from '@tonejs/midi';
@@ -18,6 +18,7 @@ enum Menu {
 }
 
 export default function Home() {
+  const [inputMidiName, setInputMidiName] = useState<string>("");
   const [inputMidi, setInputMidi] = useState<Midi>(null); // Might not be so necessary
   const [outputMidi, setOutputMidi] = useState<Midi>(null);
   const [openMenu, setOpenMenu] = useState<Menu>(Menu.NONE);
@@ -28,16 +29,27 @@ export default function Home() {
     tempo: -1,
   });
 
+  useEffect(() => {
+    updateOutputMidi()
+  }, [inputMidi, conversionSettings])
+
+  const updateOutputMidi = async () => {
+    if (!inputMidi) return;
+    // console.log(`Updating Output Midi\nInput file: ${inputMidiName}\nConversion Settings:`);
+    // console.log(conversionSettings);
+    const newMidi = await makePolyrhythmicCounterpoint(inputMidi, conversionSettings);
+    setOutputMidi(newMidi);
+  }
+
   const handleMidiDrop = async (event) => {
-    if (!event.target.files.length) {
+    if (!event.target.files.length || !event.target.files[0].name.endsWith(".mid")) {
       setInputMidi(null);
+      setInputMidiName("");
       return;
     }
-    console.log(event);
     const originalMidi = await Midi.fromUrl(URL.createObjectURL(event.target.files[0]));
+    setInputMidiName(event.target.files[0].name.replace(".mid", ""));
     setInputMidi(originalMidi);
-    const newMidi = await makePolyrhythmicCounterpoint(originalMidi, conversionSettings);
-    setOutputMidi(newMidi);
     return;
   }
 
@@ -64,7 +76,7 @@ export default function Home() {
               : <a
                 className="bg-blue-700 text-white p-2"
                 href={URL.createObjectURL(new Blob([outputMidi.toArray()], { type: "audio/midi" }))}
-                download="polyrhythmic_counterpoint.mid"
+                download={`Polyrhythmic Counterpoint - ${inputMidiName} [${new Date(Date.now()).toISOString()}].mid`}
               >Download</a>}
         </div>
       </div>
