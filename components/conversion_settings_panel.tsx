@@ -42,12 +42,12 @@ export default function ConversionSettingPanel(
       <ConversionSetting title="Rhythm Multiplier">
         <input type="number" min={1} max={64} defaultValue={conversionSettings.rhythmMultiplier} onChange={updateRhythmMultiplier}></input>
       </ConversionSetting>
-      <ConversionSetting title="Tempo">
+      {/* <ConversionSetting title="Tempo">
         <p>Read from MIDI</p>
       </ConversionSetting>
       <ConversionSetting title="Quarter Note Pitch">
         <p>Tonic in middle of piece range</p>
-      </ConversionSetting>
+      </ConversionSetting> */}
     </SidePanel>
   )
 }

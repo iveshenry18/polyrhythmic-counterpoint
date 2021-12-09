@@ -1,7 +1,7 @@
 export default function SidePanel({ children, open=false }) {
     return ( open &&
         <div
-            className={`flex-col justify-start gap-6 bg-gray-50 p-5 h-screen transition-all min-w-min w-1/4`}>
+            className={`flex-col justify-start gap-6 bg-gray-50 p-5 h-screen transition-all min-w-min w-1/4 overflow-y-auto`}>
             {children}
         </div>
     )
