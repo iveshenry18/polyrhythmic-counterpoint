@@ -74,7 +74,7 @@ export default function Home() {
             : !outputMidi
               ? <div className="cursor-wait p-2">processing...</div>
               : <a
-                className="bg-blue-700 text-white p-2"
+                className="bg-blue-700 text-white p-2 no-underline"
                 href={URL.createObjectURL(new Blob([outputMidi.toArray()], { type: "audio/midi" }))}
                 download={`Polyrhythmic Counterpoint - ${inputMidiName} [${new Date(Date.now()).toISOString()}].mid`}
               >Download</a>}
