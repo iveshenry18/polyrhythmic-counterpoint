@@ -14,7 +14,8 @@ import HelpPanel from "../components/help_panel";
 import ConversionSettingPanel, {
   ConversionSettings,
 } from "../components/conversion_settings_panel";
-import { PanelIconButton } from "../components/side_panel";
+import { IconButton, PanelIconButton } from "../components/side_panel";
+import { GitHubIcon } from "../components/github_logo";
 
 enum Menu {
   NONE = 0,
@@ -23,6 +24,7 @@ enum Menu {
   CODE,
   PLAYBACK,
 }
+
 
 export default function Home() {
   const [inputMidiName, setInputMidiName] = useState<string>("");
@@ -151,6 +153,14 @@ export default function Home() {
               Icon={CodeBracketIcon}
             />
           )}
+          <IconButton
+            Icon={GitHubIcon}
+            onClick={() =>
+              window.open(
+                "https://github.com/iveshenry18/polyrhythmic-counterpoint"
+              )
+            }
+          />
         </div>
       </div>
     </div>
