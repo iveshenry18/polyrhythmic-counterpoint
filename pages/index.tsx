@@ -16,6 +16,7 @@ import ConversionSettingPanel, {
 } from "../components/conversion_settings_panel";
 import { IconButton, PanelIconButton } from "../components/side_panel";
 import { GitHubIcon } from "../components/github_logo";
+import { CoffeeLogo } from "../components/coffee_logo";
 
 enum Menu {
   NONE = 0,
@@ -24,7 +25,6 @@ enum Menu {
   CODE,
   PLAYBACK,
 }
-
 
 export default function Home() {
   const [inputMidiName, setInputMidiName] = useState<string>("");
@@ -159,6 +159,12 @@ export default function Home() {
               window.open(
                 "https://github.com/iveshenry18/polyrhythmic-counterpoint"
               )
+            }
+          />
+          <IconButton
+            Icon={CoffeeLogo}
+            onClick={() =>
+              window.open("https://www.buymeacoffee.com/henryives")
             }
           />
         </div>
